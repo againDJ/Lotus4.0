@@ -21,7 +21,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Lotus";
     public override string Author { get; init; } = "LunnayalunaLotus";
     public override List<string>? Contributors { get; init; } = ["LycorisOni"];
-    public override SemanticVersioning.Version Version { get; init; } = new("1.7.0");
+    public override SemanticVersioning.Version Version { get; init; } = new("1.7.1");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
     public override List<string>? Incompatibilities { get; init; } = null;
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = new()
