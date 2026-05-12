@@ -21,7 +21,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Lotus";
     public override string Author { get; init; } = "LunnayalunaLotus";
     public override List<string>? Contributors { get; init; } = ["LycorisOni"];
-    public override SemanticVersioning.Version Version { get; init; } = new("1.7.1");
+    public override SemanticVersioning.Version Version { get; init; } = new("1.7.2");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
     public override List<string>? Incompatibilities { get; init; } = null;
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = new()
@@ -42,6 +42,7 @@ public class LunaLotusJsonLoad(
     ImageRouter imageRouter,
     ConfigServer configServer,
     TimeUtil timeUtil,
+    DatabaseService databaseService,
     AddCustomTraderHelper addCustomTraderHelper // This class is a custom one to be used as the main class for the mod. 
      
 )
@@ -86,6 +87,29 @@ public class LunaLotusJsonLoad(
         
         return Task.CompletedTask;
     }
+}
+
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+public class EditDatabaseValues(
+    DatabaseService databaseService)
+    : IOnLoad
+{
+    public Task OnLoad()
+    {
+        EditLabs(databaseService);
+
+        return Task.CompletedTask;
+    }
+
+    public void EditLabs(DatabaseService databaseService)
+    {
+        var locations = databaseService.GetLocations();
+        var lab = locations.Laboratory;
+
+        lab.Base.AccessKeys = lab.Base.AccessKeys.Append("6747b519aa6cb78b189e6081");
+        lab.Base.AccessKeysPvE = lab.Base.AccessKeysPvE.Append("6747b519aa6cb78b189e6081");
+    }
+
 }
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 2)]
 public class Oni(
